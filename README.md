@@ -1,6 +1,8 @@
 # log-watcher
 A simple log watcher
 
+Note: We assume that you have installed docker on your computer. If docker not installed you can get help from [here ](https://docs.docker.com/engine/install/) 
+
 1. Clone the project
 2. Now you can find `docker-compose.yml.example` you have to copy and rename it to `docker-compose.yml` file. Command `docker-compose.yml.example docker-compose.yml`
 3. Now edit the compose file and set mount the volumn which you want to watch logs
@@ -38,3 +40,6 @@ docker-compose up -d
 You can access it from http://localhost:5050
 
 
+
+## The output after login
+<img align="right" src="screenshot.png" style="width:100%">
