@@ -1,4 +1,4 @@
-# log-watcher
+![Screenshot](https://github.com/bdsarwar/log-watcher/assets/481544/2c01b9df-426c-41b5-b779-72b6aa90154f)# log-watcher
 A simple log watcher
 
 Note: We assume that you have installed docker on your computer. If docker not installed you can get help from [here ](https://docs.docker.com/engine/install/) 
@@ -40,7 +40,5 @@ docker-compose up -d
 You can access it from http://localhost:5050
 
 
-
 ## The output after login
-<img align="right" src="./screenshot.png" style="width:100%">
-![Screenshot](https://github.com/bdsarwar/log-watcher/assets/481544/be2c150a-8ee1-4df6-844c-27aeb03d3935)
+[Screenshot](https://github.com/bdsarwar/log-watcher/assets/481544/be2c150a-8ee1-4df6-844c-27aeb03d3935)
