@@ -1,0 +1,55 @@
+src/config.py
+docker-compose.yml
+
+# Byte-compiled / optimized / DLL files
+src/__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask instance-specific files
+src/instance/
+*.sqlite
+
+# Configuration files
+.config
+*.cfg
+*.conf
+
+# Environments
+.env
+.venv/
+ENV/
+
+# IDE related files
+*.idea/
+.vscode/
+
+# PyCharm related files
+.idea/
+
+# Log files
+*.log
+
+# pycache
+__pycache__/
+
+# Cache files for Flask sessions
+.flask_session/
+src/.flask_session/
+
+# SQLite database files
+*.db
+*.db-wal
+*.db-shm
+
+# pytest cache
+.pytest_cache/
+
+# Other common files to ignore
+*.swp
+*.swo
+.DS_Store
+
+# If you're using other tools, like database migrations, you might also want to exclude:
+# migrations/
+# Or other folders/files specific to your project.

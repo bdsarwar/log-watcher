@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        /* Global styling */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        button, select, input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Log content area */
+        #logContent {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            height: 600px;
+            overflow: auto;
+        }
+
+        /* Pagination styling */
+        #pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        #pageLinks > span {
+            margin: 0 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        #pageLinks > span:hover {
+            background-color: #ddd;
+        }
+
+        #pageLinks > span.active {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+        #logoutButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #ff4d4d; /* red color */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        #logoutButton:hover {
+            background-color: #cc0000; /* darker red on hover */
+        }
+
+    </style>
+</head>
+<body>    
+
+<select id="logFileSelector"></select>
+<label for="itemsPerPage">Items per page:</label>
+<select id="itemsPerPage" onchange="showLogContent()">
+    <option value="50">50</option>
+    <option value="100" selected>100</option>
+    <option value="200">200</option>
+    <option value="500">500</option>
+</select>
+
+<label for="readFrom">Read from:</label>
+<select id="readFrom" onchange="showLogContent()">
+    <option value="top" selected>Top</option>
+    <option value="bottom">Bottom</option>
+</select>
+
+<input type="text" id="searchTerm" placeholder="Search logs...">
+<button onclick="showLogContent()">Search</button>
+<button id="logoutButton" onclick="location.href='/logout'">Logout</button>
+<div id="pagination">
+    <button onclick="prevPage()">Previous</button>
+    <span id="pageLinks"></span>
+    <button onclick="nextPage()">Next</button>
+</div>
+<pre id="logContent"></pre>
+
+<script>
+let currentPage = 1;
+let totalPages = 0;
+
+function setPage(pageNumber) {
+    currentPage = pageNumber;
+    showLogContent();
+}
+
+function showLogContent() {
+    let logFile = document.getElementById('logFileSelector').value;
+    let searchTerm = document.getElementById('searchTerm').value || '';
+    let itemsPerPage = document.getElementById('itemsPerPage').value;
+    let readFrom = document.getElementById('readFrom').value;
+
+    fetch('/get_log_content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'log_file=' + encodeURIComponent(logFile) +
+                '&page=' + currentPage +
+                '&search_term=' + encodeURIComponent(searchTerm) +
+                '&items_per_page=' + itemsPerPage +
+                '&read_from=' + readFrom
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('logContent').textContent = data.content;
+            totalPages = Math.ceil(data.total_lines / data.lines_per_page);
+            renderPagination();
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
+        });
+}
+
+function nextPage() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        showLogContent();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showLogContent();
+    }
+}
+
+function renderPagination() {
+    let pageLinks = document.getElementById('pageLinks');
+    pageLinks.innerHTML = '';
+
+    for(let i = 1; i <= totalPages; i++) {
+        let pageLink = document.createElement('span');
+        pageLink.textContent = i;
+        pageLink.style.cursor = 'pointer';
+        if (i === currentPage) {
+            pageLink.style.fontWeight = 'bold';
+        }
+        pageLink.onclick = function() {
+            setPage(i);
+        }
+        pageLinks.appendChild(pageLink);
+
+        if (i !== totalPages) {
+            let separator = document.createElement('span');
+            separator.textContent = ' | ';
+            pageLinks.appendChild(separator);
+        }
+    }
+}
+
+window.onload = function() {
+    fetch('/get_log_files')
+    .then(response => response.json())
+    .then(data => {
+        let dropdown = document.getElementById('logFileSelector');
+        data.log_files.forEach(file => {
+            let option = document.createElement('option');
+            option.text = file.name;
+            option.value = file.path;
+            dropdown.add(option);
+        });
+    });
+};
+
+</script>
+</body>
+</html>
