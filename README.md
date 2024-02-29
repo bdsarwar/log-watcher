@@ -42,4 +42,4 @@ You can access it from http://localhost:5050
 
 
 ## The output after login
-<img align="right" src="screenshot.png" style="width:100%">
+<img align="right" src="./screenshot.png" style="width:100%">
