@@ -43,3 +43,4 @@ You can access it from http://localhost:5050
 
 ## The output after login
 <img align="right" src="./screenshot.png" style="width:100%">
+![Screenshot](https://github.com/bdsarwar/log-watcher/assets/481544/be2c150a-8ee1-4df6-844c-27aeb03d3935)
